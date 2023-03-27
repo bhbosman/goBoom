@@ -11,31 +11,30 @@ import (
 )
 
 type AstContextBuilder struct {
-	validTypes map[string]reflect.Type
-	typeSpecs  []*TypeSpec
+	ValidTypes map[string]reflect.Type
+	TypeSpecs  []*TypeSpec
 }
 
-func (self *AstContextBuilder) ValidType(expr ast.Expr) {
+func (cb *AstContextBuilder) ValidType(expr ast.Expr) reflect.Type {
 	switch dt := expr.(type) {
 	case *ast.Ident:
-		if _, ok := self.validTypes[dt.Name]; !ok {
-			panic(fmt.Errorf("not supporting type %v", dt.Name))
+		if v, ok := cb.ValidTypes[dt.Name]; ok {
+			return v
 		}
-	default:
-		panic("implement")
+		panic(fmt.Errorf("not supporting type %v", dt.Name))
 	}
-
+	panic("implement")
 }
 
-func (self *AstContextBuilder) AddTypeSpec(typeSpec *TypeSpec) {
-	self.typeSpecs = append(self.typeSpecs, typeSpec)
+func (cb *AstContextBuilder) AddTypeSpec(typeSpec *TypeSpec) {
+	cb.TypeSpecs = append(cb.TypeSpecs, typeSpec)
 }
 
-func (self *AstContextBuilder) namespace() string {
+func (cb *AstContextBuilder) namespace() string {
 	return "github.com/bhbosman/goBoom/model"
 }
 
-func (self *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader) {
+func (cb *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader) {
 	fileSet := token.NewFileSet()
 	astFile, err := parser.ParseFile(fileSet, fileName, readerCloser, 0)
 	if err != nil {
@@ -52,7 +51,7 @@ func (self *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader
 						indent--
 						if popValue, ok := st.Pop(); ok {
 							if complete, ok := popValue.(IDefinedNode); ok {
-								complete.Complete(self)
+								complete.Complete(cb)
 							}
 						}
 					} else {
@@ -216,7 +215,7 @@ func (self *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader
 				lp := createLocalPos(n)
 				doPush := func(unk interface{}) {
 					if complete, ok := unk.(IDefinedNode); ok {
-						complete.Start(self)
+						complete.Start(cb)
 					}
 					st.Push(unk)
 				}
@@ -227,8 +226,8 @@ func (self *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader
 
 					} else {
 						if complete, ok := v.(IDefinedNode); ok {
-							complete.Start(self)
-							complete.Complete(self)
+							complete.Start(cb)
+							complete.Complete(cb)
 						}
 						indent--
 					}
@@ -251,37 +250,37 @@ func (self *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader
 	}
 }
 
-func (self *AstContextBuilder) Validate() {
-	self.validateTypeSpecs()
+func (cb *AstContextBuilder) Validate() {
+	cb.validateTypeSpecs()
 }
 
-func (self *AstContextBuilder) Generate() {
+func (cb *AstContextBuilder) Generate() {
 
 }
 
-func (self *AstContextBuilder) validateTypeSpecs() {
-	for _, typeSpec := range self.typeSpecs {
-		typeSpec.Validate(self)
+func (cb *AstContextBuilder) validateTypeSpecs() {
+	for _, typeSpec := range cb.TypeSpecs {
+		typeSpec.Validate(cb)
 
 	}
 }
 
-func (self *AstContextBuilder) Init() {
-	self.validTypes["int"] = reflect.TypeOf(int(0))
-	//self.validTypes["uint"] = reflect.TypeOf(uint(0))
-	//self.validTypes["int8"] = reflect.TypeOf(int8(0))
-	//self.validTypes["int16"] = reflect.TypeOf(int16(0))
-	//self.validTypes["int32"] = reflect.TypeOf(int32(0))
-	//self.validTypes["int64"] = reflect.TypeOf(int64(0))
-	//self.validTypes["uint8"] = reflect.TypeOf(uint8(0))
-	//self.validTypes["uint16"] = reflect.TypeOf(uint16(0))
-	//self.validTypes["uint32"] = reflect.TypeOf(uint32(0))
-	//self.validTypes["uint64"] = reflect.TypeOf(uint64(0))
+func (cb *AstContextBuilder) Init() {
+	cb.ValidTypes["int"] = reflect.TypeOf(int(0))
+	//cb.validTypes["uint"] = reflect.TypeOf(uint(0))
+	//cb.validTypes["int8"] = reflect.TypeOf(int8(0))
+	//cb.validTypes["int16"] = reflect.TypeOf(int16(0))
+	//cb.validTypes["int32"] = reflect.TypeOf(int32(0))
+	//cb.validTypes["int64"] = reflect.TypeOf(int64(0))
+	//cb.validTypes["uint8"] = reflect.TypeOf(uint8(0))
+	//cb.validTypes["uint16"] = reflect.TypeOf(uint16(0))
+	//cb.validTypes["uint32"] = reflect.TypeOf(uint32(0))
+	//cb.validTypes["uint64"] = reflect.TypeOf(uint64(0))
 }
 
 func NewAstContextBuilder() *AstContextBuilder {
 	return &AstContextBuilder{
-		validTypes: make(map[string]reflect.Type),
-		typeSpecs:  nil,
+		ValidTypes: make(map[string]reflect.Type),
+		TypeSpecs:  nil,
 	}
 }

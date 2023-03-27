@@ -10,19 +10,19 @@ import (
 type TypeSpec struct {
 	Location
 	name       string
-	structType *StructType
+	StructType *StructType
 	typeSpec   *ast.TypeSpec
 }
 
 func (self *TypeSpec) AssignStructType(structType *StructType) {
-	self.structType = structType
+	self.StructType = structType
 }
 
 func (self *TypeSpec) Validate(container IContainer) {
 	if self.name == "" {
 		panic("there should be a name")
 	}
-	self.structType.Validate(container)
+	self.StructType.Validate(container)
 }
 
 func (self *TypeSpec) Start(IContainer) {

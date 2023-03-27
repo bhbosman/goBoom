@@ -5,6 +5,7 @@ import (
 	"go/ast"
 	"go/token"
 	"reflect"
+	"strings"
 )
 
 type MultiFieldDeclaration struct {
@@ -16,6 +17,19 @@ type MultiFieldDeclaration struct {
 	// oncomplete
 	idents       []string
 	declaredType ast.Expr
+}
+
+func (self *MultiFieldDeclaration) ReflectedType() reflect.Type {
+	panic("this should never be called, as this type is temp object that will be replaced with DeclaredField")
+}
+
+func (self *MultiFieldDeclaration) DeclaredTypeExpression() ast.Expr {
+	// if self.declaredType is nil, then the Complete have not executed
+	return self.declaredType
+}
+
+func (self *MultiFieldDeclaration) Name() string {
+	return strings.Join(self.idents, ",")
 }
 
 func (self *MultiFieldDeclaration) Validate(container IContainer) {

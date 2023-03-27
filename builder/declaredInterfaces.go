@@ -3,6 +3,7 @@ package builder
 import (
 	"go/ast"
 	"go/token"
+	"reflect"
 )
 
 type IIdent interface {
@@ -24,7 +25,10 @@ type Node interface {
 
 type IField interface {
 	Node
+	Name() string
 	someIFieldDecl()
+	DeclaredTypeExpression() ast.Expr
+	ReflectedType() reflect.Type
 }
 
 type IAddField interface {
@@ -45,7 +49,7 @@ type IAssignBlockStatement interface {
 
 type IContainer interface {
 	AddTypeSpec(spec *TypeSpec)
-	ValidType(expr ast.Expr)
+	ValidType(expr ast.Expr) reflect.Type
 }
 
 type IDefinedNode interface {
