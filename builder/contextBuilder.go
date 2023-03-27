@@ -13,15 +13,30 @@ import (
 type AstContextBuilder struct {
 	ValidTypes map[string]reflect.Type
 	TypeSpecs  []*TypeSpec
+	ValueSpec  []*ValueSpec
 }
 
-func (cb *AstContextBuilder) ValidType(expr ast.Expr) reflect.Type {
+func (cb *AstContextBuilder) AddValueSpec(valueSpec *ValueSpec) {
+	cb.ValueSpec = append(cb.ValueSpec, valueSpec)
+}
+
+func (cb *AstContextBuilder) ValidTypeFromKind(kind token.Token) reflect.Type {
+	switch kind {
+	case token.INT:
+		return cb.ValidTypes["int"]
+	}
+	panic("implement")
+}
+
+func (cb *AstContextBuilder) ValidType(expr IDefinedNode) reflect.Type {
 	switch dt := expr.(type) {
-	case *ast.Ident:
-		if v, ok := cb.ValidTypes[dt.Name]; ok {
+	case *Ident:
+		if v, ok := cb.ValidTypes[dt.AstIdent.Name]; ok {
 			return v
 		}
-		panic(fmt.Errorf("not supporting type %v", dt.Name))
+		panic(fmt.Errorf("not supporting type %v", dt.AstIdent.Name))
+	case *BasicLit:
+		return cb.ValidTypeFromKind(dt.basicLit.Kind)
 	}
 	panic("implement")
 }
@@ -94,7 +109,15 @@ func (cb *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader) 
 						}
 						return blockStmt
 					case *ast.CallExpr:
-						return NewCallExpr(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
+						callExpr := NewCallExpr(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
+						if stackValue, ok := st.Peek(); ok {
+							if assignIdent, ok := stackValue.(IAssignIdent); ok {
+								assignIdent.AssignExpression(callExpr)
+							} else {
+								panic("Ident must be assigned")
+							}
+						}
+						return callExpr
 					case *ast.CompositeLit:
 						return NewCompositeLit(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
 					case *ast.Field:
@@ -144,14 +167,14 @@ func (cb *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader) 
 						result := NewFuncLit(indent, fileSet.Position(v.Pos()), n.Pos(), n.End(), v)
 						return result
 					case *ast.Ident:
+						result := NewIdent(indent, fileSet.Position(v.Pos()), n.Pos(), n.End(), v)
 						if stackValue, ok := st.Peek(); ok {
 							if assignIdent, ok := stackValue.(IAssignIdent); ok {
-								assignIdent.AssignExpression(v)
+								assignIdent.AssignExpression(result)
 							} else {
 								panic("Ident must be assigned")
 							}
 						}
-						result := NewIdent(indent, fileSet.Position(v.Pos()), n.Pos(), n.End(), v)
 						return result
 					case *ast.IfStmt:
 						return NewIfStmt(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
@@ -172,8 +195,8 @@ func (cb *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader) 
 					case *ast.StructType:
 						if stackValue, ok := st.Peek(); ok {
 							structType := NewStructType(indent, fileSet.Position(v.Pos()), n.Pos(), n.End(), v)
-							if assignStructType, ok := stackValue.(IAssignStructType); ok {
-								assignStructType.AssignStructType(structType)
+							if assignStructType, ok := stackValue.(IAssignIdent); ok {
+								assignStructType.AssignExpression(structType)
 								return structType
 							}
 						}
@@ -181,13 +204,22 @@ func (cb *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader) 
 					case *ast.TypeSpec:
 						return NewTypeSpec(indent, fileSet.Position(v.Pos()), n.Pos(), n.End(), v)
 					case *ast.ValueSpec:
-						return NewValueSpec(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
+						valueSpec := NewValueSpec(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
+						return valueSpec
 					case *ast.ImportSpec:
 						return NewImportSpec(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
 					case *ast.GenDecl:
 						return NewGenDecl(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
 					case *ast.BasicLit:
-						return NewBasicLit(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
+						basicLit := NewBasicLit(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
+						if stackValue, ok := st.Peek(); ok {
+							if assignIdent, ok := stackValue.(IAssignIdent); ok {
+								assignIdent.AssignExpression(basicLit)
+							} else {
+								panic("Ident must be assigned")
+							}
+						}
+						return basicLit
 					case *ast.ExprStmt:
 						return NewExprStmt(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
 					case *ast.BranchStmt:
@@ -201,7 +233,15 @@ func (cb *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader) 
 					case *ast.InterfaceType:
 						return NewInterfaceType(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
 					case *ast.UnaryExpr:
-						return NewUnaryExpr(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
+						unaryExpr := NewUnaryExpr(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
+						if stackValue, ok := st.Peek(); ok {
+							if assignIdent, ok := stackValue.(IAssignIdent); ok {
+								assignIdent.AssignExpression(unaryExpr)
+							} else {
+								panic("Ident must be assigned")
+							}
+						}
+						return unaryExpr
 					case *ast.TypeSwitchStmt:
 						return NewTypeSwitchStmt(indent, fileSet.Position(v.Pos()), v.Pos(), v.End(), v)
 					case *ast.TypeAssertExpr:
@@ -252,6 +292,7 @@ func (cb *AstContextBuilder) ReadFiles(fileName string, readerCloser io.Reader) 
 
 func (cb *AstContextBuilder) Validate() {
 	cb.validateTypeSpecs()
+	cb.validateValueSpec()
 }
 
 func (cb *AstContextBuilder) Generate() {
@@ -261,7 +302,12 @@ func (cb *AstContextBuilder) Generate() {
 func (cb *AstContextBuilder) validateTypeSpecs() {
 	for _, typeSpec := range cb.TypeSpecs {
 		typeSpec.Validate(cb)
+	}
+}
 
+func (cb *AstContextBuilder) validateValueSpec() {
+	for _, valueSpec := range cb.ValueSpec {
+		valueSpec.Validate(cb)
 	}
 }
 

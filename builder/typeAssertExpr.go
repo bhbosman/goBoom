@@ -12,6 +12,11 @@ type TypeAssertExpr struct {
 	typeAssertExpr *ast.TypeAssertExpr
 }
 
+func (self *TypeAssertExpr) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *TypeAssertExpr) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -25,7 +30,7 @@ func (self *TypeAssertExpr) Complete(IContainer) {
 	self.Print(fmt.Sprintf("Complete %v", reflect.TypeOf(self).String()))
 }
 
-func (self *TypeAssertExpr) AssignExpression(expression ast.Expr) {
+func (self *TypeAssertExpr) AssignExpression(IDefinedNode) {
 }
 
 func NewTypeAssertExpr(indent int, position token.Position, pos token.Pos, end token.Pos, typeAssertExpr *ast.TypeAssertExpr) *TypeAssertExpr {

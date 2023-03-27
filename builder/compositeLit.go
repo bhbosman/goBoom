@@ -12,6 +12,11 @@ type CompositeLit struct {
 	compositeLit *ast.CompositeLit
 }
 
+func (self *CompositeLit) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *CompositeLit) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -25,7 +30,7 @@ func (self *CompositeLit) Complete(IContainer) {
 	self.Print(fmt.Sprintf("Complete %v", reflect.TypeOf(self).String()))
 }
 
-func (self *CompositeLit) AssignExpression(expression ast.Expr) {
+func (self *CompositeLit) AssignExpression(IDefinedNode) {
 }
 
 func NewCompositeLit(indent int, position token.Position, pos token.Pos, end token.Pos, compositeLit *ast.CompositeLit) *CompositeLit {

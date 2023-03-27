@@ -12,6 +12,11 @@ type RangeStmt struct {
 	rangeStmt *ast.RangeStmt
 }
 
+func (self *RangeStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *RangeStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -28,7 +33,7 @@ func (self *RangeStmt) Complete(IContainer) {
 func (self *RangeStmt) SetBlockStatement(stmt *BlockStmt) {
 }
 
-func (self *RangeStmt) AssignExpression(expression ast.Expr) {
+func (self *RangeStmt) AssignExpression(IDefinedNode) {
 }
 
 func NewRangeStmt(indent int, position token.Position, pos token.Pos, end token.Pos, rangeStmt *ast.RangeStmt) *RangeStmt {

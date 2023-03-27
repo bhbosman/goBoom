@@ -9,25 +9,28 @@ import (
 type IIdent interface {
 	GetIdent() string
 }
-
-type IAssignStructType interface {
-	AssignStructType(*StructType)
-}
-
-type IAssignIdent interface {
-	AssignExpression(expression ast.Expr)
-}
 type Node interface {
 	ast.Node
 	Indent() int
 	Position() token.Position
 }
 
-type IField interface {
+type IDefinedNode interface {
 	Node
+	Start(IContainer)
+	Complete(IContainer)
+	Validate(IContainer)
+	DetermineType(container IContainer) reflect.Type
+}
+
+type IAssignIdent interface {
+	AssignExpression(node IDefinedNode)
+}
+
+type IField interface {
+	IDefinedNode
 	Name() string
 	someIFieldDecl()
-	DeclaredTypeExpression() ast.Expr
 	ReflectedType() reflect.Type
 }
 
@@ -48,13 +51,8 @@ type IAssignBlockStatement interface {
 }
 
 type IContainer interface {
-	AddTypeSpec(spec *TypeSpec)
-	ValidType(expr ast.Expr) reflect.Type
-}
-
-type IDefinedNode interface {
-	ast.Node
-	Start(IContainer)
-	Complete(IContainer)
-	Validate(IContainer)
+	AddTypeSpec(*TypeSpec)
+	AddValueSpec(*ValueSpec)
+	ValidType(expr IDefinedNode) reflect.Type
+	ValidTypeFromKind(kind token.Token) reflect.Type
 }

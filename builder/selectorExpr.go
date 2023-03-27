@@ -9,8 +9,13 @@ import (
 
 type SelectorExpr struct {
 	Location
-	expression   ast.Expr
+	expression   IDefinedNode
 	selectorExpr *ast.SelectorExpr
+}
+
+func (self *SelectorExpr) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
 }
 
 func (self *SelectorExpr) Validate(container IContainer) {
@@ -27,11 +32,11 @@ func (self *SelectorExpr) Complete(IContainer) {
 }
 
 func (self *SelectorExpr) GetIdent() string {
-	return self.expression.(*ast.Ident).Name
+	return self.expression.(*Ident).AstIdent.Name
 }
 
-func (self *SelectorExpr) AssignExpression(expression ast.Expr) {
-	self.expression = expression
+func (self *SelectorExpr) AssignExpression(node IDefinedNode) {
+	self.expression = node
 }
 
 func NewSelectorExpr(indent int, position token.Position, pos token.Pos, end token.Pos, selectorExpr *ast.SelectorExpr) *SelectorExpr {

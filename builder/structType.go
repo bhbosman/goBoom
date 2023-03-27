@@ -13,12 +13,16 @@ type StructType struct {
 	structType *ast.StructType
 }
 
+func (self *StructType) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *StructType) Validate(container IContainer) {
 	for _, field := range self.Fields {
-		if declaredField, ok := field.(*DeclaredField); ok {
-			declaredField.reflectedType = container.ValidType(declaredField.declaredType)
-		}
+		field.Validate(container)
 	}
+
 }
 
 func (self *StructType) Start(IContainer) {
@@ -31,7 +35,7 @@ func (self *StructType) Complete(IContainer) {
 	for _, field := range self.Fields {
 		if multiFieldDeclaration, ok := field.(*MultiFieldDeclaration); ok {
 			for _, ident := range multiFieldDeclaration.idents {
-				declaredField := NewDeclaredField(field.Indent(), field.Position(), field.Pos(), field.End(), ident, multiFieldDeclaration.declaredType)
+				declaredField := NewDeclaredField(ident, multiFieldDeclaration.declaredType)
 				newFields = append(newFields, declaredField)
 			}
 			continue

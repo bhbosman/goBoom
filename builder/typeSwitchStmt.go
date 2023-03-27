@@ -12,6 +12,11 @@ type TypeSwitchStmt struct {
 	typeSwitchStmt *ast.TypeSwitchStmt
 }
 
+func (self *TypeSwitchStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *TypeSwitchStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

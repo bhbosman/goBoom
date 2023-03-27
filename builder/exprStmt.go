@@ -12,6 +12,11 @@ type ExprStmt struct {
 	ExprStmt *ast.ExprStmt
 }
 
+func (self *ExprStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *ExprStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

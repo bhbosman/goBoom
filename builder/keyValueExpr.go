@@ -12,6 +12,11 @@ type KeyValueExpr struct {
 	keyValueExpr *ast.KeyValueExpr
 }
 
+func (self *KeyValueExpr) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *KeyValueExpr) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -25,7 +30,7 @@ func (self *KeyValueExpr) Complete(IContainer) {
 	self.Print(fmt.Sprintf("Complete %v", reflect.TypeOf(self).String()))
 }
 
-func (self *KeyValueExpr) AssignExpression(expression ast.Expr) {
+func (self *KeyValueExpr) AssignExpression(IDefinedNode) {
 }
 
 func NewKeyValueExpr(indent int, position token.Position, pos token.Pos, end token.Pos, keyValueExpr *ast.KeyValueExpr) *KeyValueExpr {

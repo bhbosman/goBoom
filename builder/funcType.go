@@ -16,6 +16,11 @@ type FuncType struct {
 	funcType  *ast.FuncType
 }
 
+func (self *FuncType) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *FuncType) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

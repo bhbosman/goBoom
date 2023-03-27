@@ -12,6 +12,11 @@ type IfStmt struct {
 	ifStmt *ast.IfStmt
 }
 
+func (self *IfStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *IfStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -25,7 +30,7 @@ func (self *IfStmt) Complete(IContainer) {
 	self.Print(fmt.Sprintf("Complete %v", reflect.TypeOf(self).String()))
 }
 
-func (self *IfStmt) AssignExpression(expression ast.Expr) {
+func (self *IfStmt) AssignExpression(IDefinedNode) {
 }
 
 func (self *IfStmt) SetBlockStatement(stmt *BlockStmt) {

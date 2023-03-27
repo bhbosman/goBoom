@@ -12,6 +12,11 @@ type BranchStmt struct {
 	BranchStmt *ast.BranchStmt
 }
 
+func (self *BranchStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *BranchStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

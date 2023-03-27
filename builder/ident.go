@@ -9,12 +9,18 @@ import (
 
 type Ident struct {
 	Location
-	ident *ast.Ident
+	AstIdent *ast.Ident
+}
+
+func (self *Ident) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
 }
 
 func (self *Ident) Validate(container IContainer) {
-	//TODO implement me
-	panic("implement me")
+	if self.AstIdent.Name == "" {
+		panic("ident must have a name")
+	}
 }
 
 func (self *Ident) Start(IContainer) {
@@ -32,7 +38,7 @@ func (self *Ident) RemoveNode() bool {
 func NewIdent(indent int, position token.Position, pos token.Pos, end token.Pos, ident *ast.Ident) *Ident {
 	result := &Ident{
 		Location: NewLocation(indent, position, pos, end),
-		ident:    ident,
+		AstIdent: ident,
 	}
 	return result
 }

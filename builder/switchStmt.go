@@ -12,6 +12,11 @@ type SwitchStmt struct {
 	switchStmt *ast.SwitchStmt
 }
 
+func (self *SwitchStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *SwitchStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -28,7 +33,7 @@ func (self *SwitchStmt) Complete(IContainer) {
 func (self *SwitchStmt) SetBlockStatement(stmt *BlockStmt) {
 }
 
-func (self *SwitchStmt) AssignExpression(expression ast.Expr) {
+func (self *SwitchStmt) AssignExpression(IDefinedNode) {
 }
 
 func NewSwitchStmt(indent int, position token.Position, pos token.Pos, end token.Pos, switchStmt *ast.SwitchStmt) *SwitchStmt {

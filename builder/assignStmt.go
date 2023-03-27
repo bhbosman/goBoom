@@ -9,8 +9,13 @@ import (
 
 type AssignStmt struct {
 	Location
-	expressions []ast.Expr
+	expressions []IDefinedNode
 	assignStmt  *ast.AssignStmt
+}
+
+func (self *AssignStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
 }
 
 func (self *AssignStmt) Validate(container IContainer) {
@@ -26,8 +31,8 @@ func (self *AssignStmt) Complete(IContainer) {
 	self.Print(fmt.Sprintf("Complete %v", reflect.TypeOf(self).String()))
 }
 
-func (self *AssignStmt) AssignExpression(expression ast.Expr) {
-	self.expressions = append(self.expressions, expression)
+func (self *AssignStmt) AssignExpression(node IDefinedNode) {
+	self.expressions = append(self.expressions, node)
 }
 
 func NewAssignStmt(indent int, position token.Position, pos token.Pos, end token.Pos, assignStmt *ast.AssignStmt) *AssignStmt {

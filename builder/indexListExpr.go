@@ -12,6 +12,11 @@ type IndexListExpr struct {
 	indexListExpr *ast.IndexListExpr
 }
 
+func (self *IndexListExpr) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *IndexListExpr) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -25,7 +30,7 @@ func (self *IndexListExpr) Complete(IContainer) {
 	self.Print(fmt.Sprintf("Complete %v", reflect.TypeOf(self).String()))
 }
 
-func (self *IndexListExpr) AssignExpression(expression ast.Expr) {
+func (self *IndexListExpr) AssignExpression(IDefinedNode) {
 
 }
 
