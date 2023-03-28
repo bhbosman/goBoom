@@ -12,6 +12,11 @@ type BlockStmt struct {
 	blockStmt *ast.BlockStmt
 }
 
+func (self *BlockStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *BlockStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

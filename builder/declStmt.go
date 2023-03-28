@@ -12,6 +12,11 @@ type DeclStmt struct {
 	DeclStmt *ast.DeclStmt
 }
 
+func (self *DeclStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *DeclStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

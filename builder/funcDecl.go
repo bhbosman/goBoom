@@ -9,9 +9,14 @@ import (
 
 type FuncDecl struct {
 	Location
-	expression ast.Expr
+	expression IDefinedNode
 	funcType   *FuncType
 	funcDecl   *ast.FuncDecl
+}
+
+func (self *FuncDecl) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
 }
 
 func (self *FuncDecl) Validate(container IContainer) {
@@ -35,10 +40,10 @@ func (self *FuncDecl) Complete(IContainer) {
 }
 
 func (self *FuncDecl) GetIdent() string {
-	return self.expression.(*ast.Ident).Name
+	return self.expression.(*Ident).AstIdent.Name
 }
 
-func (self *FuncDecl) AssignExpression(expression ast.Expr) {
+func (self *FuncDecl) AssignExpression(expression IDefinedNode) {
 	self.expression = expression
 }
 

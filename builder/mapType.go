@@ -12,6 +12,11 @@ type MapType struct {
 	mapType *ast.MapType
 }
 
+func (self *MapType) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *MapType) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -25,7 +30,7 @@ func (self *MapType) Complete(IContainer) {
 	self.Print(fmt.Sprintf("Complete %v", reflect.TypeOf(self).String()))
 }
 
-func (self *MapType) AssignExpression(expression ast.Expr) {
+func (self *MapType) AssignExpression(IDefinedNode) {
 }
 
 func NewMapType(indent int, position token.Position, pos token.Pos, end token.Pos, mapType *ast.MapType) *MapType {

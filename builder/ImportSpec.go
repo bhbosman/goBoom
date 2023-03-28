@@ -12,6 +12,11 @@ type ImportSpec struct {
 	importSpec *ast.ImportSpec
 }
 
+func (self *ImportSpec) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *ImportSpec) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

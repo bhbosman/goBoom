@@ -2,14 +2,18 @@ package builder
 
 import (
 	"fmt"
-	"go/ast"
 	"go/token"
 	"reflect"
 )
 
 type File struct {
 	Location
-	expression ast.Expr
+	expression IDefinedNode
+}
+
+func (self *File) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
 }
 
 func (self *File) Validate(container IContainer) {
@@ -32,9 +36,9 @@ func NewFile(indent int, position token.Position, pos token.Pos, end token.Pos) 
 }
 
 func (self *File) GetIdent() string {
-	return self.expression.(*ast.Ident).Name
+	return self.expression.(*Ident).AstIdent.Name
 }
 
-func (self *File) AssignExpression(expression ast.Expr) {
-	self.expression = expression
+func (self *File) AssignExpression(node IDefinedNode) {
+	self.expression = node
 }

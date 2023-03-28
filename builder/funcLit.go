@@ -13,6 +13,11 @@ type FuncLit struct {
 	funcLit  *ast.FuncLit
 }
 
+func (self *FuncLit) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *FuncLit) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

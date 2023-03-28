@@ -12,6 +12,11 @@ type ForStmt struct {
 	forStmt *ast.ForStmt
 }
 
+func (self *ForStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *ForStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -28,7 +33,7 @@ func (self *ForStmt) Complete(IContainer) {
 func (self *ForStmt) SetBlockStatement(stmt *BlockStmt) {
 }
 
-func (self *ForStmt) AssignExpression(expression ast.Expr) {
+func (self *ForStmt) AssignExpression(IDefinedNode) {
 }
 
 func NewForStmt(indent int, position token.Position, pos token.Pos, end token.Pos, forStmt *ast.ForStmt) *ForStmt {

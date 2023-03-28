@@ -13,6 +13,11 @@ type InterfaceType struct {
 	fields        []IField
 }
 
+func (self *InterfaceType) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *InterfaceType) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

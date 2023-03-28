@@ -12,6 +12,11 @@ type ArrayType struct {
 	arrayType *ast.ArrayType
 }
 
+func (self *ArrayType) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *ArrayType) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -25,7 +30,7 @@ func (self *ArrayType) Complete(IContainer) {
 	self.Print(fmt.Sprintf("Complete %v", reflect.TypeOf(self).String()))
 }
 
-func (self *ArrayType) AssignExpression(expression ast.Expr) {
+func (self *ArrayType) AssignExpression(IDefinedNode) {
 }
 
 func NewArrayType(indent int, position token.Position, pos token.Pos, end token.Pos, arrayType *ast.ArrayType) *ArrayType {

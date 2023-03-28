@@ -7,7 +7,11 @@ type SomeStructDefWithOnyIntegers struct {
 	SomeInt003             int
 }
 
-//type IDefinition0001 interface {
-//	SomeVoid()
-//	SomeInt() int
+//var someData = &SomeStructDefWithOnyIntegers{
+//	SomeInt001: 1,
+//	SomeInt002: 2,
+//	SomeInt003: 3,
 //}
+//
+////
+////var one, two, three = 1, 2, 3

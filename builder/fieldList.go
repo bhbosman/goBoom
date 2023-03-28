@@ -13,6 +13,11 @@ type FieldList struct {
 	fieldList *ast.FieldList
 }
 
+func (self *FieldList) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *FieldList) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

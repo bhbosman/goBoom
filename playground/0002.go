@@ -1,14 +1,9 @@
 package playground
 
-type Definition0002 struct {
-	SomeInt    int
-	SomeString string
-	SomeStruct struct {
-		SomeFloat64 float64
-		SomeFloat32 float32
-	}
-	SomeStruct2 struct {
-		SomeFloat64 float64
-		SomeFloat32 float32
-	}
-}
+// test ValueSpec
+
+//goland:noinspection ALL
+var one, two, three = 1, 2, 3
+
+//goland:noinspection ALL
+var four, five, six = 4, 5, int(6)

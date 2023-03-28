@@ -12,6 +12,11 @@ type IncDecStmt struct {
 	incDecStmt *ast.IncDecStmt
 }
 
+func (self *IncDecStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *IncDecStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -25,7 +30,7 @@ func (self *IncDecStmt) Complete(IContainer) {
 	self.Print(fmt.Sprintf("Complete %v", reflect.TypeOf(self).String()))
 }
 
-func (self *IncDecStmt) AssignExpression(expression ast.Expr) {
+func (self *IncDecStmt) AssignExpression(IDefinedNode) {
 }
 
 func NewIncDecStmt(indent int, position token.Position, pos token.Pos, end token.Pos, incDecStmt *ast.IncDecStmt) *IncDecStmt {

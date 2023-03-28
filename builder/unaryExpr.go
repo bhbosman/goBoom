@@ -12,6 +12,11 @@ type UnaryExpr struct {
 	UnaryExpr *ast.UnaryExpr
 }
 
+func (self *UnaryExpr) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *UnaryExpr) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

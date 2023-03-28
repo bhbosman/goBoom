@@ -12,6 +12,11 @@ type GenDecl struct {
 	genDecl *ast.GenDecl
 }
 
+func (self *GenDecl) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *GenDecl) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")

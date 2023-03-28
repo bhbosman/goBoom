@@ -12,6 +12,11 @@ type ReturnStmt struct {
 	returnStmt *ast.ReturnStmt
 }
 
+func (self *ReturnStmt) DetermineType(container IContainer) reflect.Type {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (self *ReturnStmt) Validate(container IContainer) {
 	//TODO implement me
 	panic("implement me")
@@ -25,7 +30,7 @@ func (self *ReturnStmt) Complete(IContainer) {
 	self.Print(fmt.Sprintf("Complete %v", reflect.TypeOf(self).String()))
 }
 
-func (self *ReturnStmt) AssignExpression(expression ast.Expr) {
+func (self *ReturnStmt) AssignExpression(IDefinedNode) {
 }
 
 func NewReturnStmt(indent int, position token.Position, pos token.Pos, end token.Pos, returnStmt *ast.ReturnStmt) *ReturnStmt {
